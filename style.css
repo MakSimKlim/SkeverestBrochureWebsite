@@ -1,0 +1,1175 @@
+:root {
+	--bg-body: #e2e5e9;        /* Внешний фон страницы */
+	--card-bg: #ffffff;        /* Фон корпуса визитки */
+	--bg-inner: #f4f6f8;       /* Фон под карточками внутри */
+	--text-main: #0f1115;      /* Мокрый асфальт */
+	--text-muted: #646c75;
+	--accent-orange: #ff4500;   /* Сигнальный оранжевый */
+	--border-dark: #d2d6dc;
+	--font-global: 'Inter', -apple-system, sans-serif;
+	
+	/* Цвета брендов соцсетей */
+	--color-tg: #229ED9;
+	--color-vk: #0077FF;
+	--color-max: #6366F1;
+}
+
+* { 
+	margin: 0; 
+	padding: 0; 
+	box-sizing: border-box; 
+	font-family: var(--font-global); 
+	-webkit-tap-highlight-color: transparent; 
+}
+
+/* Заставляет браузер всегда резервировать место под скроллбар */
+html {	
+	scrollbar-gutter: stable;
+}
+
+body {
+	position: relative;
+	background-color: var(--bg-body);
+	color: var(--text-main);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	padding: 20px 10px;
+	overflow-x: hidden; /* Защита от горизонтальной прокрутки из-за блюра */
+}
+
+/* Размытый фоновый слой */
+body::before {
+	content: '';
+	position: fixed;
+	top: -10px;
+	left: -10px;
+	right: -10px;
+	bottom: -10px;
+	z-index: -1;
+	background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url('background/backgroundLogoEverestCity.jpg');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	filter: blur(10px);
+}
+
+/* ГЛАВНЫЙ КОНТЕЙНЕР — ВСЕГДА 480px */
+/* Базовый контейнер */
+.phone-container {
+	width: 480px;
+	min-width: 480px; /* Фиксируем ширину */
+	background: var(--card-bg);
+	border: 1px solid var(--border-dark);
+	border-radius: 28px;
+	padding: 20px;
+	box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+	position: relative;
+	overflow: hidden;
+}
+/* Кроссбраузерный медиа-запрос для мобильных */
+@media (max-width: 500px) {
+	.phone-container {
+		/* Переносим точку отсчета масштаба в верхний центр */
+		transform-origin: top center;
+		
+		/* Рассчитываем и применяем точный масштаб */
+		transform: scale(calc((100vw - 20px) / 480));
+		
+		/* Компенсируем сжатие по высоте, чтобы не было пустой дыры снизу */
+		margin-bottom: calc((480px - (100vw - 20px)) * -0.8); 
+	}
+}
+
+/* ДИНАМИЧЕСКАЯ БЕСШОВНАЯ БЕГУЩАЯ СТРОКА */
+.ticker-wrap {
+	width: 100%;
+	overflow: hidden;
+	background: rgba(255, 69, 0, 0.08);
+	border: 1px solid rgba(255, 69, 0, 0.25);
+	border-radius: 12px;
+	padding: 10px 0;
+	margin-bottom: 16px;
+	user-select: none;
+}
+
+.ticker-track {
+	display: flex;
+	width: max-content;
+	will-change: transform;
+	transform: translateZ(0); 
+	backface-visibility: hidden;
+	perspective: 1000px;
+	animation: marquee 12s linear infinite;
+}
+
+.ticker-content {
+	display: flex;
+	flex-shrink: 0;
+	align-items: center;
+}
+
+.ticker-item {
+	font-size: 0.75rem;
+	font-weight: 900;
+	text-transform: uppercase;
+	color: var(--accent-orange);
+	padding: 0 15px;
+	letter-spacing: 0.05em;
+	white-space: nowrap;
+}
+
+@keyframes marquee {
+	0% { transform: translate3d(0, 0, 0); }
+	100% { transform: translate3d(-50%, 0, 0); }
+}
+
+/* HEADER */
+.header-flex {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	gap: 12px;
+	background: var(--bg-inner);
+	padding: 16px;
+	border-radius: 18px;
+	border: 1px solid var(--border-dark);
+}
+
+.brand-info {
+	display: flex;
+	flex-direction: column;
+}
+
+.brand-logo {
+	font-size: 1.15rem;
+	font-weight: 900;
+	text-transform: uppercase;
+	letter-spacing: -0.03em;
+	line-height: 1.1;
+}
+
+.brand-logo span { 
+	color: var(--accent-orange); 
+}
+
+.brand-details {
+	font-size: 0.6rem;
+	color: var(--text-muted);
+	font-weight: 500;
+	margin-top: 10px;
+	line-height: 1.25;
+}
+
+/* Кнопка СРО */
+.badge-sro {
+	font-size: 0.65rem;
+	font-weight: 700;
+	background: var(--accent-orange);
+	color: #000000;
+	padding: 6px 10px;
+	border-radius: 100px;
+	border: 1px solid var(--accent-orange);
+	box-shadow: 0 8px 20px rgba(255, 69, 0, 0.35);
+	text-decoration: none;
+	white-space: nowrap;
+	transition: all 0.2s ease;
+	margin-top: -4px;
+	margin-left: 6px;
+}
+
+.badge-sro:hover {
+	color: #ffffff;
+	transform: translateY(-1px);
+	box-shadow: 0 10px 24px rgba(255, 69, 0, 0.45);
+}
+
+.badge-sro:active {
+	transform: translateY(0);
+	box-shadow: 0 4px 12px rgba(255, 69, 0, 0.25);
+}
+
+/* ЧЕРНАЯ РАЗДЕЛИТЕЛЬНАЯ ЧЕРТА */
+.section-divider {
+	border: none;
+	border-top: 1px solid var(--text-main);
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+/* HERO BENTO TITLE */
+.hero-bento {
+	background: var(--bg-inner);
+	padding: 20px;
+	border-radius: 18px;
+	margin-bottom: 14px;
+	border: 1px solid var(--border-dark);
+
+}
+
+.hero-tag {
+	font-size: 0.75rem;
+	font-weight: 700;
+	color: var(--accent-orange);
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	margin-bottom: 6px;
+}
+
+.hero-title {
+	font-size: 1.5rem;
+	font-weight: 900;
+	text-transform: uppercase;
+	line-height: 1.1;
+}
+
+/* METRICS GRID */
+.metrics-grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 10px;
+	margin-bottom: 14px;
+}
+
+.metric-card {
+	background: var(--bg-inner);
+	padding: 16px;
+	border-radius: 16px;
+	border: 1px solid var(--border-dark);
+	transition: all 0.2s ease;
+}
+
+.metric-card:active {
+	transform: translateY(2px);
+	background: #e8ebf0;
+}
+
+.metric-value {
+	font-size: 1.8rem;
+	font-weight: 900;
+	color: var(--text-main);
+	line-height: 1;
+	margin-bottom: 4px;
+}
+
+.metric-value .unit { 
+	color: var(--accent-orange); 
+}
+
+.metric-label {
+	font-size: 0.7rem;
+	color: var(--text-muted);
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+/* БЛОК КНОПКИ ПОД МЕТРИКАМИ */
+.sub-metrics-actions {
+	margin-bottom: 16px;
+}
+
+/* ИНТЕРАКТИВНЫЙ СЛАЙДЕР В ЦЕНТРЕ */
+.slider-header {
+	margin-bottom: 8px;
+}
+
+.tab-switcher {
+	display: flex;
+	background: var(--bg-inner);
+	padding: 4px;
+	border-radius: 100px;
+	margin-bottom: 10px;
+	border: 1px solid var(--border-dark);
+	width: 100%;
+	gap: 2px;
+}
+
+.tab-btn {
+	flex: 1;
+	background: transparent;
+	border: none;
+	color: var(--text-muted);
+	padding: 8px 1px;
+	font-size: 0.62rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	border-radius: 100px;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.tab-btn.active {
+	background: var(--accent-orange);
+	color: #fff;
+	box-shadow: 0 4px 12px rgba(255, 69, 0, 0.3);
+}
+
+/* ВЬЮПОРТ ДЛЯ ЛЕНТЫ СЛАЙДОВ */
+.slider-viewport {
+	overflow: hidden;
+	width: 100%;
+	aspect-ratio: 1 / 1;
+	border-radius: 16px;
+	margin-bottom: 16px;
+}
+
+.slider-track {
+	display: flex;
+	transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+	width: 500%;
+	height: 100%;
+}
+
+.slide-item {
+	position: relative;
+	width: 20%;
+	height: 100%;
+	background: transparent; /* Делаем фон слайдов прозрачным */
+	padding: 20px;
+	border-radius: 16px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	box-sizing: border-box;
+}
+.slider-viewport {
+	position: relative; /* Обязательно для позиционирования фона */
+	overflow: hidden;
+	width: 100%;
+	aspect-ratio: 1 / 1;
+	border-radius: 16px;
+	margin-bottom: 16px;
+	background: var(--bg-inner); /* Базовый фон за логотипом */
+	border: 1px solid var(--border-dark);
+}
+
+/* Статичная полупрозрачная и размытая подложка */
+.slider-viewport::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-image: url('logo/logoEverestBlack.png');
+	background-size: contain;   /* Картинка полностью помещается */
+	background-position: center; /* По центру */
+	background-repeat: no-repeat;
+	opacity: 0.15;              /* Прозрачность логотипа */
+	filter: blur(4px);          /* Сила размытия */
+	pointer-events: none;       /* Чтобы не мешало кликам */
+	z-index: 0;                 /* Опускаем под слайды */
+}
+
+/* Гарантируем, что лента со слайдами и текстом находится поверх фона */
+.slider-track {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+	width: 500%;
+	height: 100%;
+}
+
+/* СТИЛИ СЛАЙДОВ И СПИСКОВ */
+.tab-title,
+.tab-subtitle {
+	color: var(--accent-orange);
+	text-transform: uppercase;
+	font-weight: 900;
+	line-height: 1.2;
+	margin-top: 0;
+	margin-bottom: 8px;
+	font-size: 1.3rem;
+}
+
+.tab-desc {
+	color: var(--text-muted);
+	font-size: 0.82rem;
+	line-height: 1.45;
+}
+
+.tab-desc-main {
+	color: var(--text-main, #000000);
+	font-size: 0.95rem;
+	font-weight: 600;
+	line-height: 1.4;
+	margin-bottom: 8px;
+}
+
+.staff-list,
+.digital-list,
+.base-list,
+.values-list {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 6px 12px;
+	padding-left: 18px;
+	margin: 0;
+	font-size: 0.8rem;
+	color: var(--text-muted);
+	list-style-type: disc;
+}
+
+.staff-list li::marker,
+.digital-list li::marker,
+.base-list li::marker,
+.values-list li::marker {
+	color: var(--accent-orange);
+}
+
+.mission-box {
+	background: rgba(255, 69, 0, 0.05);
+	border-left: 3px solid var(--accent-orange);
+	padding: 10px 15px;
+	font-size: 0.9rem;
+	font-weight: 700;
+	color: var(--text-main);
+	font-style: italic;
+	border-radius: 0 10px 10px 0;
+	margin-bottom: 20px;
+}
+
+/* ГАЛЕРЕЯ — родительский контейнер */
+.gallery-grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 10px;
+	margin-top: 8px;
+}
+
+/* Карточка галереи — базовое состояние */
+.gallery-card {
+	background: #ffffff;
+	border: 1px solid var(--border-dark);
+	border-radius: 12px;
+	overflow: hidden;
+	cursor: pointer;
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	/* Плавный переход для всех изменений: масштаба, тени, фильтра */
+	transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), 
+	            box-shadow 0.3s ease, 
+	            filter 0.3s ease, 
+	            opacity 0.3s ease;
+	z-index: 1; /* Базовый слой */
+}
+
+/* 1. Когда мышь НАВЕДЕНА НА ГАЛЕРЕЮ — ВСЕ карточки слегка «приглушаются» */
+.gallery-grid:hover .gallery-card {
+	filter: brightness(0.6) grayscale(10%); /* Покрываются серой тенью / темнеют */
+	opacity: 0.8;                           /* Слегка прозрачнеют */
+}
+
+/* 2. Но ТА КАРТОЧКА, на которую НАВЕЛИСЬ — выдвигается вперёд */
+.gallery-grid .gallery-card:hover {
+	transform: scale(1.02) translateY(-4px); /* Увеличивается и «тянется» вверх к пользователю */
+	filter: brightness(1) grayscale(0%);      /* Возвращается полная яркость и цвет */
+	opacity: 1;
+	z-index: 10;                             /* Поднимается НАД остальными карточками */
+	box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25); /* Глубокая объемная тень под ней */
+}
+
+/* При нажатии на телефоне или клике */
+.gallery-card:active {
+	transform: scale(0.98);
+}
+
+.gallery-thumb {
+	width: 100%;
+	height: 85px;
+	object-fit: cover;
+	display: block;
+}
+
+.gallery-info {
+	padding: 8px;
+	text-align: left;
+}
+
+.gallery-name {
+	font-size: 0.78rem;
+	font-weight: 900;
+	color: var(--text-main);
+	line-height: 1.1;
+}
+
+.gallery-desc {
+	font-size: 0.65rem;
+	color: var(--text-muted);
+	margin-top: 2px;
+}
+
+/* LIGHTBOX */
+.lightbox {
+	display: none;
+	position: fixed;
+	z-index: 9999;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.88);
+	backdrop-filter: blur(8px);
+	justify-content: center;
+	align-items: center;
+	padding: 15px;
+	box-sizing: border-box;
+	animation: fadeIn 0.25s ease;
+}
+
+.lightbox-content {
+	position: relative;
+	background: var(--card-bg);
+	border-radius: 18px;
+	width: 100%;
+	max-width: 90vw;
+	max-height: 90vh;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+}
+
+.lightbox-content img {
+	width: 100%;
+	height: auto;
+	max-height: 65vh; 
+	object-fit: contain;
+	background: #000;
+	display: block;
+}
+
+.lightbox-close {
+	position: absolute;
+	top: 10px;
+	right: 14px;
+	color: #ffffff;
+	font-size: 32px;
+	font-weight: bold;
+	cursor: pointer;
+	text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+	z-index: 10;
+}
+
+.lightbox-caption {
+	padding: 14px 16px;
+	text-align: left;
+	overflow-y: auto;
+}
+
+.lightbox-title {
+	font-size: 1.05rem;
+	font-weight: 900;
+	color: var(--accent-orange);
+	text-transform: uppercase;
+	margin-bottom: 4px;
+}
+
+.lightbox-text {
+	font-size: 0.85rem;
+	color: var(--text-main);
+	line-height: 1.4;
+}
+
+/* БАЗОВЫЙ КЛАСС ИНТЕРАКТИВНЫХ КНОПОК */
+.btn-act {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	height: 45px;
+	padding: 0 18px;
+	border-radius: 16px;
+	font-weight: 700;
+	text-decoration: none;
+	font-size: 0.82rem;
+	letter-spacing: 0.03em;
+	transition: all 0.2s ease;
+	cursor: pointer;
+	border: none;
+	width: 100%;
+}
+
+.btn-act > span {
+	text-align: center;
+}
+
+.btn-act > span:not(:only-child):last-child {
+	position: absolute;
+	right: 18px;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.btn-act:active {
+	transform: translateY(2px);
+}
+
+/* ГЛАВНАЯ ОРАНЖЕВАЯ КНОПКА (Скачать портфолио) */
+.btn-main {
+	background: var(--accent-orange);
+	color: #000000;
+	border-radius: 100px;
+	border: 1px solid var(--accent-orange);
+	box-shadow: 0 8px 20px rgba(255, 69, 0, 0.35);
+	transition: all 0.2s ease;
+	cursor: pointer;
+}
+
+.btn-main > span {
+	margin: 0 auto;
+	text-align: center;
+	font-weight: 700;
+}
+
+.btn-main:hover {
+	color: #ffffff;
+	transform: translateY(-1px);
+	box-shadow: 0 10px 24px rgba(255, 69, 0, 0.45);
+}
+
+.btn-main:active {
+	transform: translateY(0);
+	box-shadow: 0 4px 12px rgba(255, 69, 0, 0.25);
+}
+
+/* КНОПКИ КОНТАКТОВ (Телефон, Email) */
+.contact-header {
+	text-align: center;
+	margin-bottom: 6px;
+}
+.contact-header-details {
+	font-size: 0.7rem;
+	color: var(--text-muted);
+	font-weight: 500;
+	margin-top: 1px;
+	margin-bottom: -10px;
+	line-height: 1.25;
+}
+
+.contact-methods {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+	width: 100%;
+	margin-bottom: 15px;
+	font-weight: 400;
+}
+
+.method-item {
+	text-align: center;
+	font-size: 0.82rem;
+	color: var(--text-main);
+	text-decoration: none;
+	font-weight: 700;
+	background: var(--bg-inner);
+	height: 45px;
+	padding: 0 16px;
+	border-radius: 100px;
+	border: 1px solid var(--border-dark);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	transition: all 0.2s ease;
+	cursor: pointer;
+}
+
+.contact-methods .method-item:hover,
+.method-item:hover {
+	color: var(--accent-orange);
+	border-color: var(--accent-orange);
+	background: #e8ebf0;
+	transform: translateY(-1px);
+}
+
+.contact-methods .method-item:active,
+.method-item:active {
+	transform: translateY(1px);
+	background: #e8ebf0;
+	opacity: 0.9;
+}
+
+/* НЕОНОВАЯ ПУЛЬСАЦИЯ ДЛЯ ТЕЛЕФОНА */
+.method-item.phone-pulse {
+	border-color: var(--accent-orange);
+	animation: phonePulseGlow 2.5s infinite ease-in-out;
+}
+
+@keyframes phonePulseGlow {
+	0% {
+		box-shadow: 0 0 0 0 rgba(255, 69, 0, 0.4);
+		border-color: rgba(255, 69, 0, 0.4);
+	}
+	50% {
+		box-shadow: 0 0 16px rgba(255, 69, 0, 0.6);
+		border-color: var(--accent-orange);
+	}
+	100% {
+		box-shadow: 0 0 0 0 rgba(255, 69, 0, 0.4);
+		border-color: rgba(255, 69, 0, 0.4);
+	}
+}
+
+/* КНОПКА С АДРЕСОМ И КАРТОЙ и с раворачиванием основного блока*/
+.toggle-content-btn,
+.btn-secondary {
+	width: 100%;
+	height: 45px;
+	padding: 0 16px;
+	background: var(--bg-inner);
+	border: 1px solid var(--border-dark);
+	border-radius: 100px;
+	color: var(--text-main);
+	font-size: 0.82rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	cursor: pointer;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	margin-bottom: 15px;
+	transition: all 0.2s ease;
+}
+
+.toggle-content-btn:hover,
+.btn-secondary:hover {
+	color: var(--accent-orange);
+	border-color: var(--accent-orange);
+	background: #e8ebf0;
+	transform: translateY(-1px);
+}
+
+.toggle-content-btn:active,
+.btn-secondary:active {
+	transform: translateY(1px);
+	background: #e8ebf0;
+	opacity: 0.9;
+}
+
+/* СОЦСЕТИ */
+.socials-wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
+	margin: 0 0 10px 0;
+	width: 100%;
+}
+
+.socials-title {
+	font-size: 0.72rem;
+	font-weight: 700;
+	color: var(--text-muted);
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+.socials-row {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 30px; /* Уменьшили зазор, чтобы иконки не вылезали на телефонах */
+	margin-top: 7px;
+	width: 100%;
+}
+
+.social-circle-btn {
+	width: 58px;
+	height: 58px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+	border: 1px solid var(--border-dark);
+	background: var(--bg-inner);
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+	
+	/* Обновили transition для плавной анимации подтягивания и тени */
+	transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), 
+	            box-shadow 0.25s ease, 
+	            border-color 0.25s ease;
+}
+
+.social-circle-btn svg {
+	width: 32px;
+	height: 32px;
+}
+
+/* Исходные цвета для каждой соцсети */
+.social-circle-btn.tg {
+	color: var(--color-tg);
+	border-color: rgba(34, 158, 217, 0.3);
+	background: rgba(34, 158, 217, 0.08);
+}
+
+.social-circle-btn.vk {
+	color: var(--color-vk);
+	border-color: rgba(0, 119, 255, 0.3);
+	background: rgba(0, 119, 255, 0.08);
+}
+
+.social-circle-btn.max {
+	color: var(--color-max);
+	border-color: rgba(99, 102, 241, 0.3);
+	background: rgba(99, 102, 241, 0.08);
+}
+
+/* --- АНИМАЦИИ ПРИ НАВЕДЕНИИ (HOVER) --- */
+
+.social-circle-btn.tg:hover {
+	transform: translateY(-4px) scale(1.08) rotate(360deg);
+	border-color: var(--color-tg);
+	box-shadow: 0 8px 20px rgba(34, 158, 217, 0.35);
+}
+
+.social-circle-btn.vk:hover {
+	transform: translateY(-4px) scale(1.08) rotate(360deg);
+	border-color: var(--color-vk);
+	box-shadow: 0 8px 20px rgba(0, 119, 255, 0.35);
+}
+
+.social-circle-btn.max:hover {
+	transform: translateY(-4px) scale(1.08) rotate(360deg);
+	border-color: var(--color-max);
+	box-shadow: 0 8px 20px rgba(99, 102, 241, 0.35);
+}
+
+/* --- ЭФФЕКТ НАЖАТИЯ (ACTIVE) --- */
+
+.social-circle-btn:active {
+	transform: translateY(-1px) scale(0.96);
+	box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* КНОПКА СОХРАНЕНИЯ vCard */
+.vcard-save-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 45px;
+	padding: 0 14px;
+	background: var(--text-main);
+	color: #fff;
+	text-decoration: none;
+	font-weight: 900;
+	font-size: 0.9rem;
+	text-transform: uppercase;
+	border-radius: 100px;
+	transition: all 0.2s;
+	border: none;
+	cursor: pointer;
+}
+
+.vcard-save-btn:active { 
+	transform: translateY(2px); 
+}
+
+/* ДИНАМИЧЕСКИЕ РАСКРЫВАЮЩИЕСЯ БЛОКИ */
+.expand-box {
+	display: none;
+	background: var(--bg-inner);
+	border: 1px solid var(--border-dark);
+	border-radius: 16px;
+	padding: 12px;
+	margin-top: 6px;
+	margin-bottom: 10px;
+	animation: fadeIn 0.3s ease;
+	text-align: left;
+}
+
+.expand-box.active { 
+	display: block; 
+}
+
+@keyframes fadeIn {
+	from { opacity: 0; transform: translateY(-6px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+
+.spec-list { 
+	display: flex; 
+	flex-direction: column; 
+	gap: 8px; 
+}
+
+.spec-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background: #fff;
+	padding: 12px;
+	border-radius: 10px;
+	border: 1px solid var(--border-dark);
+	font-size: 0.75rem;
+	font-weight: 700;
+}
+
+.spec-item a { 
+	color: var(--accent-orange); 
+	text-decoration: none; 
+	font-weight: 900; 
+}
+
+/* КАРТА */
+.map-iframe-container {
+	width: 100%;
+	aspect-ratio: 1 / 1;
+	border-radius: 12px;
+	overflow: hidden;
+	border: 1px solid var(--border-dark);
+}
+
+/* БЛОК СОТРУДНИЧЕСТВА */
+.cta-bento {
+	background: linear-gradient(-45deg, #0f1115, #ff4500, #000000, #ff4500);
+	background-size: 400% 400%;
+	animation: gradientBG 8s ease infinite;
+	padding: 20px;
+	border-radius: 18px;
+	border: 0px solid var(--accent-orange);
+	text-align: left;
+	margin-top: 24px;
+	margin-bottom: 24px;
+	box-shadow: 0 10px 25px rgba(255, 69, 0, 0.15);
+}
+
+@keyframes gradientBG {
+	0% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
+}
+
+.cta-title {
+	font-size: 1.1rem;
+	font-weight: 900;
+	text-transform: uppercase;
+	color: #ffffff;
+	margin-bottom: 8px;
+	line-height: 1.2;
+}
+
+.cta-desc {
+	font-size: 0.82rem;
+	color: rgba(255, 255, 255, 0.9);
+	font-weight: 600;
+	line-height: 1.45;
+}
+
+/* ФУТЕР */
+footer {
+	border-top: 1px solid var(--text-main);
+	padding-top: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+
+.vcard-avatar {
+	width: 60px;
+	height: 60px;
+	background: var(--accent-orange);
+	color: #fff;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.4rem;
+	font-weight: 900;
+	margin-bottom: 20px;
+	box-shadow: 0 4px 12px rgba(255, 69, 0, 0.3);
+}
+
+.vcard-title { 
+	font-size: 1.05rem; 
+	font-weight: 900; 
+	text-transform: uppercase; 
+	margin-bottom: 20px; 
+}
+
+.vcard-subtitle {
+	font-size: 0.72rem;
+	font-weight: 600;
+	color: var(--text-muted);
+	margin-top: 1px;
+	margin-bottom: 25px;
+	line-height: 1.3;
+}
+
+.vcard-avatar-img {
+	width: 300px;
+	height: 160px;
+	object-fit: contain;
+	margin-bottom: 16px;
+}
+
+.copyright-box {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	margin-top: 16px;
+	font-size: 0.7rem;
+	font-weight: 600;
+	color: var(--text-muted);
+	text-align: center;
+}
+
+.copyright-box p {
+	margin: 0;
+	padding: 0;
+}
+
+.disclaimer-text {
+	font-size: 0.6rem;
+	font-weight: 400;
+	opacity: 0.75;
+	max-width: 90%;
+	line-height: 1.3;
+}
+
+/* СВОРАЧИВАНИЕ ГЛАВНОГО БЛОКА */
+/* БАЗОВЫЙ БЛОК */
+.main-content {
+	opacity: 1;
+	transition: opacity 0.3s ease;
+}
+/* АНИМАЦИЯ ДЛЯ СВОРАЧИВАЕМЫХ ЧАСТЕЙ (ВЕРХ И НИЗ) */
+.content-top,
+.content-bottom {
+	max-height: 3000px; /* Достаточный запас по высоте */
+	opacity: 1;
+	overflow: hidden;
+	transition: max-height 0.4s cubic-bezier(0, 1, 0, 1), 
+	            opacity 0.3s ease, 
+	            margin 0.4s ease;
+}
+/* КОГДА БЛОК СВЁРНУТ */
+.main-content.collapsed .content-top,
+.main-content.collapsed .content-bottom {
+	max-height: 0;
+	opacity: 0;
+	margin: 0;
+	padding: 0;
+	pointer-events: none;
+}
+
+/* Стили для всплывающего окна */
+.confirm-modal-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.6);
+	-webkit-backdrop-filter: blur(4px);
+	backdrop-filter: blur(4px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 9999;
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.confirm-modal-overlay.active {
+	opacity: 1;
+	visibility: visible;
+	pointer-events: auto;
+}
+
+.confirm-modal-card {
+	background: #ffffff;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	border-radius: 16px;
+	padding: 22px 20px;
+	width: 90%;
+	max-width: 340px;
+	text-align: center;
+	box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+	transform: scale(0.9);
+	transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.confirm-modal-overlay.active .confirm-modal-card {
+	transform: scale(1);
+}
+
+.confirm-modal-title {
+	font-size: 1.05rem;
+	font-weight: 700;
+	color: #1a1a1a;
+	margin-bottom: 6px;
+}
+
+.confirm-modal-text {
+	font-size: 0.85rem;
+	color: #666666;
+	margin-bottom: 20px;
+	line-height: 1.4;
+}
+
+.confirm-modal-actions {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.modal-btn {
+	width: 100%;
+	padding: 11px 14px;
+	border-radius: 10px;
+	font-weight: 600;
+	font-size: 0.85rem;
+	cursor: pointer;
+	border: none;
+	transition: all 0.2s ease;
+	box-sizing: border-box;
+}
+
+/* 1. Главная кнопка (Перейти / Позвонить) — ОРАНЖЕВАЯ */
+.modal-btn.btn-action {
+	background: var(--accent-orange); /* Яркий оранжевый */
+	color: #000000; /* Черный при наведении */
+}
+
+.modal-btn.btn-action:hover {
+	background: #000000; /* Черный при наведении */
+	color: #ffffff; /* Белый при наведении */
+	transform: translateY(-1px);
+}
+
+/* 2. Кнопка "Скопировать" — Светло-оранжевый контур */
+.modal-btn.btn-copy {
+	background: #fff8f3;
+	color: #d95b00;
+	border: 1px solid #ffd4b8;
+}
+
+.modal-btn.btn-copy:hover {
+	background: #ffe3d1;
+}
+
+/* 3. Отмена */
+.modal-btn.btn-cancel {
+	background: transparent;
+	color: #888888;
+}
+
+.modal-btn.btn-cancel:hover {
+	color: #1a1a1a;
+}
+
+.modal-btn:active {
+	transform: scale(0.97) !important;
+}

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ООО «СК ЭВЕРЕСТ» - Визитка</title>
+	
+	<link rel="stylesheet" href="style.css">
+	
+	<link rel="icon" type="image/png" sizes="32x32" href="logo/faviconEverestBlack.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="logo/faviconEverestBlack.png">
+	
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+    <div class="phone-container">
+
+        <div class="ticker-wrap">
+            <div class="ticker-track">
+                <div class="ticker-content">
+                    <div class="ticker-item">● МОНОЛИТ ЛЮБОЙ СЛОЖНОСТИ</div>
+                    <div class="ticker-item">● 100% АВТОНОМИЯ БАЗЫ</div>
+                    <div class="ticker-item">● 90 МЛН СРО ЛИМИТ</div>
+                    <div class="ticker-item">● ЦИФРОВОЙ БИТРИКС24 КОНТРОЛЬ</div>
+                </div>
+                <div class="ticker-content" aria-hidden="true">
+                    <div class="ticker-item">● МОНОЛИТ ЛЮБОЙ СЛОЖНОСТИ</div>
+                    <div class="ticker-item">● 100% АВТОНОМИЯ БАЗЫ</div>
+                    <div class="ticker-item">● 90 МЛН СРО ЛИМИТ</div>
+                    <div class="ticker-item">● ЦИФРОВОЙ БИТРИКС24 КОНТРОЛЬ</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="header-flex">
+            <div class="brand-info">
+                <div class="brand-logo">ООО СК «ЭВЕРЕСТ»<span>.</span></div>
+                <div class="brand-details">
+                    ИНН 7460022140, ОГРН 1157460003216, Дата регистрации 17.06.2015, уровень ответственности СРО: Первый
+                </div>
+            </div>
+            <a href="https://www.sskural.ru/directory/?ID=cd53ab96-ffd4-11eb-af31-00155d4a023c" target="_blank" class="badge-sro">СРО ССК УрСиб</a>
+        </div>
+
+        <hr class="section-divider">
+		
+		
+		<button class="toggle-content-btn" id="toggleBtn" onclick="toggleMainContent()">
+					<span id="toggleText">Свернуть основной блок</span>
+					<span id="toggleIcon">▲</span>
+				</button>
+		
+<main class="main-content" id="mainContent">
+
+	<div class="content-top">
+		<div class="hero-bento">
+			<div class="hero-tag">Профиль деятельности</div>
+			<h1 class="hero-title">Монолитные промышленные объекты любой сложности и высотности</h1>
+			<div class="brand-details">
+				За годы работы мы сформировали устойчивую репутацию подрядчика, который обеспечивает качество, соблюдение сроков и прозрачность процессов
+			</div>
+		</div>
+		
+		<div class="metrics-grid">
+			<div class="metric-card">
+				<div class="metric-value">
+					<span class="counter" data-start-year="2015">0</span><span class="unit">+</span>
+				</div>
+				<div class="metric-label">Лет на рынке</div>
+			</div>
+
+			<div class="metric-card">
+				<div class="metric-value">
+					<span class="counter" data-target="90">0</span> <span class="unit">млн</span>
+				</div>
+				<div class="metric-label">Лимит СРО</div>
+			</div>
+
+			<div class="metric-card">
+				<div class="metric-value">
+					<span class="counter" data-target="100">0</span><span class="unit">%</span>
+				</div>
+				<div class="metric-label">Своя база</div>
+			</div>
+
+			<div class="metric-card">
+				<div class="metric-value">
+					<span class="unit">&gt;</span><span class="counter" data-target="100">0</span>
+				</div>
+				<div class="metric-label">Сотрудников</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="sub-metrics-actions portfolio-btn-wrap">
+		<a href="portfolio/portfolio.pdf" class="btn-act btn-main" download style="margin-top: 10px;">
+			<span>Скачать портфолио (PDF) 7,2 Мб</span>
+		</a>
+	</div>
+
+	<div class="content-bottom">
+		<div class="slider-header">
+			<div class="tab-switcher">
+				<button class="tab-btn active" onclick="goToSlide(0)">Миссия</button>
+				<button class="tab-btn" onclick="goToSlide(1)">Ресурсы</button>
+				<button class="tab-btn" onclick="goToSlide(2)">Цифра</button>
+				<button class="tab-btn" onclick="goToSlide(3)">Команда</button>
+				<button class="tab-btn" onclick="goToSlide(4)">Галерея</button>
+			</div>
+		</div>
+
+		<div class="slider-viewport" id="sliderViewport">
+			<div class="slider-track" id="sliderTrack">
+				
+				<div class="slide-item">				
+					<div class="tab-subtitle">Наша миссия</div>
+					<div class="mission-box">
+						«Мы строим будущее, в котором хочется жить»
+					</div>
+					
+					<div class="tab-subtitle">Наши ценности</div>
+					<div class="tab-desc-main">
+						Принципы, которые лежат в основе каждого проекта, который мы реализуем:
+					</div>
+					
+					<ul class="values-list">
+						<li>Ответственность и Порядочность</li>
+						<li>Профессионализм и Качество</li>
+						<li>Доверие и Командный дух</li>
+					</ul>
+				</div>
+
+				<div class="slide-item">
+					<div class="tab-title">Собственная База</div>
+					<div class="tab-desc-main">
+						Материально-техническая оснащенность обеспечивает полную автономию и независимость от сторонних подрядчиков:
+					</div>
+
+					<ul class="base-list">
+						<li>Собственный парк опалубочных систем</li>
+						<li>Ремонтно-комплектовочный цех</li>
+						<li>Мобильные бытовые городки</li>
+						<li>Штатные профессиональные строительные бригады</li>
+					</ul>
+				</div>
+
+				<div class="slide-item">
+					<div class="tab-title">Битрикс24 & ЭДО</div>
+					<div class="tab-desc-main">
+						Современные цифровые инструменты для прозрачного управления процессами, контроля задач и высокой эффективности:
+					</div>
+
+					<ul class="digital-list">
+						<li>Единая система коммуникаций и контроля задач Битрикс24</li>
+						<li>Цифровые методы ведения исполнительной документации</li>
+						<li>Отдел цифровой оптимизации и автоматизации процессов</li>
+						<li>Полноценный электронный документооборот (ЭДО)</li>
+					</ul>
+				</div>
+
+				<div class="slide-item">
+					<div class="tab-title">Штатный состав</div>
+					<div class="tab-desc-main">
+						Структурированная команда профессионалов — часть единой системы, обеспечивающей стабильность и качество:
+					</div>
+					
+					<ul class="staff-list">
+						<li>Строительные бригады и электрики</li>
+						<li>Специалисты по ремонту опалубки</li>
+						<li>ИТР и Главный инженер</li>
+						<li>ПТО и сметный отдел</li>
+						<li>Снабжение, логистика и энергетики</li>
+						<li>Собственная служба ОТ и ТБ</li>
+						<li>Отдел цифровой оптимизации</li>
+						<li>Юридический и кадровая служба</li>
+						<li>Бухгалтерия и финотдел</li>
+						<li>Руководство компании</li>
+					</ul>
+				</div>
+
+				<div class="slide-item">
+					<div class="tab-title">Наши объекты. Кратко...</div>
+					<div class="gallery-grid">
+						
+						<div class="gallery-card" onclick="openLightbox('img/1.jpg', 'ЧТПЗ', 'Комплекс очистных сооружений AQA Баланс.')">
+							<img src="img/1.jpg" alt="ЧТПЗ" class="gallery-thumb">
+							<div class="gallery-info">
+								<div class="gallery-name">Челябинский трубопрокатный завод</div>
+								<div class="gallery-desc">Комплекс очистных сооружений AQA Баланс</div>
+							</div>
+						</div>
+
+						<div class="gallery-card" onclick="openLightbox('img/2.jpg', 'ИНСИ', 'Полный цикл монолитных работ под оборудование.')">
+							<img src="img/2.jpg" alt="ИНСИ" class="gallery-thumb">
+							<div class="gallery-info">
+								<div class="gallery-name">Завод ИНСИ</div>
+								<div class="gallery-desc">Полный цикл монолитных работ под оборудование</div>
+							</div>
+						</div>
+
+						<div class="gallery-card" onclick="openLightbox('img/3.jpg', 'ЧЦЗ', 'Цикл строительно-монтажных работ.')">
+							<img src="img/3.jpg" alt="ЧЦЗ" class="gallery-thumb">
+							<div class="gallery-info">
+								<div class="gallery-name">Челябинский цинковый завод</div>
+								<div class="gallery-desc">Цикл строительно-монтажных работ</div>
+							</div>
+						</div>
+
+						<div class="gallery-card" onclick="openLightbox('img/4.jpg', 'ГОК Курасан', 'Цикл строительно-монтажных работ.')">
+							<img src="img/4.jpg" alt="ГОК" class="gallery-thumb">
+							<div class="gallery-info">
+								<div class="gallery-name">ГОК Курасан "Золотоизвлекательная фабрика"</div>
+								<div class="gallery-desc">Цикл строительно-монтажных работ</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+		
+		<div class="cta-bento">
+			<div class="cta-title">Готовы обсудить сотрудничество</div>
+			<div class="cta-desc">
+				Мы открыты к диалогу, готовы предоставить дополнительную информацию, провести встречу и предложить оптимальные решения под ваши задачи.
+			</div>
+		</div>
+	</div>
+
+</main>
+		
+		<div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
+			<div class="lightbox-content">
+				<span class="lightbox-close" onclick="closeLightbox(event)">&times;</span>
+				<img id="lightbox-img" src="" alt="Просмотр">
+				<div class="lightbox-caption">
+					<div id="lightbox-title" class="lightbox-title"></div>
+					<div id="lightbox-text" class="lightbox-text"></div>
+				</div>
+			</div>
+		</div>
+
+        <footer>
+            <img src="logo/LogoEverestMap.jpg" alt="ООО СК ЭВЕРЕСТ" class="vcard-avatar-img">
+            <h2 class="vcard-title" style="margin-bottom: 6px;">Строительная компания «ЭВЕРЕСТ»</h2>
+            <div class="vcard-subtitle">- Ваш надежный партнер в мире монолитного строительства.</div>
+
+            <div class="contact-methods">
+			
+				<div class="contact-header">
+					<div class="socials-title">Связаться с нами</div>
+					<div class="contact-header-details">нажмите на кнопку для перехода</div>
+				</div>
+                
+                <a href="tel:+73512143909" class="method-item phone-pulse">+7 (351) 214-39-09</a>
+
+                <a href="mailto:skeverest74@list.ru" class="method-item">skeverest74@list.ru</a>
+
+                <div>
+                    <button class="btn-act btn-secondary" onclick="toggleBlock('mapBlock')">
+                        <span>г. Челябинск, ул. Могильникова, д. 95, оф. 102</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="expand-box" id="mapBlock">
+                        <div class="map-iframe-container">
+                            <iframe src="https://yandex.ru/map-widget/v1/?text=%D0%A7%D0%B5%D0%BB%D1%8F%D0%B1%D0%B8%D0%BD%D1%81%D0%BA%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%9C%D0%BE%D0%B3%D0%B8%D0%BB%D1%8C%D0%BD%D0%B8%D0%BA%D0%BE%D0%B2%D0%B0%2095&z=16" width="100%" height="100%" frameborder="0" allowfullscreen="true"></iframe>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="socials-wrapper">
+                    <div class="socials-title">Следите за нами в соцсетях:</div>
+                    <div class="socials-row">
+                        <a href="https://t.me/SK_Everest_74" target="_blank" class="social-circle-btn tg" aria-label="Telegram">
+                            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+                            </svg>
+                        </a>
+
+                        <a href="https://vk.ru/stroim_mir_vmeste" target="_blank" class="social-circle-btn vk" aria-label="ВКонтакте">
+                            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                                <path d="M15.684 18.188c-6.19 0-9.72-4.242-9.865-11.288h3.111c.1 5.17 2.38 7.362 4.19 7.815V6.9h2.928v4.461c1.792-.192 3.664-2.213 4.301-4.461h2.928c-.52 2.76-2.56 4.781-4.004 5.618 1.444.683 3.722 2.457 4.54 5.67h-3.23c-.642-2.012-2.253-3.568-4.398-3.78v3.78h-.501z"/>
+                            </svg>
+                        </a>
+
+                        <a href="https://max.ru/join/mpPhdyBLuTgo-hcKrHQnIwU90H7kyPYNHoChlPb2eeU" target="_blank" class="social-circle-btn max" aria-label="MAX">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 720" width="22" height="22" fill="currentColor">
+                                <path d="M350.4,9.6C141.8,20.5,4.1,184.1,12.8,390.4c3.8,90.3,40.1,168,48.7,253.7,2.2,22.2-4.2,49.6,21.4,59.3,31.5,11.9,79.8-8.1,106.2-26.4,9-6.1,17.6-13.2,24.2-22,27.3,18.1,53.2,35.6,85.7,43.4,143.1,34.3,299.9-44.2,369.6-170.3C799.6,291.2,622.5-4.6,350.4,9.6h0ZM269.4,504c-11.3,8.8-22.2,20.8-34.7,27.7-18.1,9.7-23.7-.4-30.5-16.4-21.4-50.9-24-137.6-11.5-190.9,16.8-72.5,72.9-136.3,150-143.1,78-6.9,150.4,32.7,183.1,104.2,72.4,159.1-112.9,316.2-256.4,218.6h0Z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <button class="vcard-save-btn" onclick="downloadVCard()">Сохранить vCard в телефон</button>
+			
+			<div class="copyright-box">
+				<p>&copy; 2015–<span id="current-year"></span> ООО СК «ЭВЕРЕСТ». Все права защищены.</p>
+				<p class="disclaimer-text">
+					Вся информация, размещенная на сайте, носит ознакомительный характер и не является публичной офертой, определяемой положениями Статьи 437 ГК РФ.
+				</p>
+			</div>
+			
+        </footer>
+		
+		<div class="confirm-modal-overlay" id="confirmModal">
+			<div class="confirm-modal-card">
+				<div class="confirm-modal-title" id="modalTitle">Подтверждение действия</div>
+				<div class="confirm-modal-text" id="modalText">Вы действительно хотите перейти по ссылке?</div>
+				
+				<div class="confirm-modal-actions">
+					<button class="modal-btn btn-action" id="modalActionBtn">Перейти</button>
+					<button class="modal-btn btn-copy" id="modalCopyBtn">Скопировать в буфер</button>
+					<button class="modal-btn btn-cancel" id="modalCancelBtn">Отмена</button>
+				</div>
+			</div>
+		</div>
+
+    </div>	
+		
+	<script src="script.js"></script>
+
+</body>
+</html>
