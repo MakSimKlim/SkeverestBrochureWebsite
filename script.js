@@ -122,17 +122,22 @@ function executeVCardDownload() {
 		'END:VCARD'
 	].join('\r\n');
 
-	const base64Data = btoa(unescape(encodeURIComponent(vcardData)));
-	const dataUri = 'data:text/vcard;charset=utf-8;base64,' + base64Data;
+	// Создаем бинарный объект (Blob) с явным указанием кодировки UTF-8
+	const blob = new Blob([vcardData], { type: 'text/vcard;charset=utf-8;' });
+	
+	// Создаем временную виртуальную ссылку
+	const blobUrl = URL.createObjectURL(blob);
 
 	const link = document.createElement('a');
-	link.href = dataUri;
-	link.download = 'SK_Everest.vcf';
-	link.target = '_blank';
+	link.href = blobUrl;
+	link.download = 'SK_Everest.vcf'; // Теперь браузер сохранит именно это имя!
 	
 	document.body.appendChild(link);
 	link.click();
 	document.body.removeChild(link);
+
+	// Освобождаем память через небольшую задержку
+	setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
 }
 
 // 2. Функция вызова модального окна

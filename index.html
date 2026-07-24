@@ -301,7 +301,7 @@
                 </div>
 
                 <button class="vcard-save-btn" onclick="downloadVCard()">Сохранить vCard в телефон</button>
-                
+
                 <div class="copyright-box">
                     <p>&copy; 2015–<span id="current-year"></span> ООО СК «ЭВЕРЕСТ». Все права защищены.</p>
                     <p class="disclaimer-text">
@@ -311,6 +311,11 @@
                 
             </footer>
             
+
+
+        </div>	
+    </div>
+
             <div class="confirm-modal-overlay" id="confirmModal">
                 <div class="confirm-modal-card">
                     <div class="confirm-modal-title" id="modalTitle">Подтверждение действия</div>
@@ -324,45 +329,49 @@
                 </div>
             </div>
 
-        </div>	
-    </div>
 
+<script>
+function rescaleCard() {
+	const wrapper = document.querySelector('.card-scale-wrapper');
+	const card = document.querySelector('.phone-container');
+	const modal = document.querySelector('.confirm-modal-card');
+	
+	if (!wrapper || !card) return;
 
+	const baseWidth = 480; 
+	const modalBaseWidth = 360; // Фиксированная базовая ширина модалки из CSS
+	const windowWidth = document.documentElement.clientWidth || window.innerWidth;
+	const padding = 20;
 
-    <script>
-		function rescaleCard() {
-			const wrapper = document.querySelector('.card-scale-wrapper');
-			const card = document.querySelector('.phone-container');
-			
-			if (!wrapper || !card) return;
+	// 1. Масштабирование основной визитки
+	if (windowWidth < baseWidth + padding) {
+		const scale = (windowWidth - padding) / baseWidth;
 
-			const baseWidth = 480; 
-			// Берем чистую ширину видимой области окна без скроллбаров
-			const windowWidth = document.documentElement.clientWidth || window.innerWidth;
-			
-			// Запас от краев экрана (по 10px с каждой стороны)
-			const padding = 20;
+		card.style.transformOrigin = 'top center';
+		card.style.transform = `scale(${scale})`;
 
-			if (windowWidth < baseWidth + padding) {
-				// Точный расчет масштаба с учетом отступов
-				const scale = (windowWidth - padding) / baseWidth;
+		const actualHeight = card.getBoundingClientRect().height;
+		wrapper.style.height = `${actualHeight}px`;
+	} else {
+		card.style.transform = 'none';
+		wrapper.style.height = 'auto';
+	}
 
-				card.style.transformOrigin = 'top center';
-				card.style.transform = `scale(${scale})`;
-
-				// Компенсируем высоту обертки под масштаб
-				const actualHeight = card.getBoundingClientRect().height;
-				wrapper.style.height = `${actualHeight}px`;
-			} else {
-				card.style.transform = 'none';
-				wrapper.style.height = 'auto';
-			}
+	// 2. Масштабирование модального окна (отдельно от визитки, чтобы не вылезало за края)
+	if (modal) {
+		if (windowWidth < modalBaseWidth + padding) {
+			const modalScale = (windowWidth - padding) / modalBaseWidth;
+			modal.style.transform = `scale(${modalScale})`;
+		} else {
+			modal.style.transform = 'none';
 		}
+	}
+}
 
-		window.addEventListener('resize', rescaleCard);
-		window.addEventListener('DOMContentLoaded', rescaleCard);
-		window.addEventListener('load', rescaleCard);
-    </script>
+window.addEventListener('resize', rescaleCard);
+window.addEventListener('DOMContentLoaded', rescaleCard);
+window.addEventListener('load', rescaleCard);
+</script>
 	
 	<script src="script.js"></script>
 
