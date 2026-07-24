@@ -148,7 +148,7 @@ function downloadVCard() {
 		return;
 	}
 
-	// Настраиваем тексты модального окна
+	// Настраиваем тексты
 	if (modalTitle) modalTitle.textContent = 'Сохранение контакта';
 	if (modalText) modalText.textContent = 'Уверены, что хотите сохранить?';
 	if (modalActionBtn) modalActionBtn.textContent = 'Да, сохранить';
@@ -156,14 +156,16 @@ function downloadVCard() {
 	// Прячем кнопку копирования
 	if (modalCopyBtn) modalCopyBtn.style.display = 'none';
 
-	// Назначаем действие на главную кнопку
-	if (modalActionBtn) {
-		modalActionBtn.onclick = function () {
-			executeVCardDownload();
-			modal.classList.remove('active');
-			modalActionBtn.onclick = null; // Очищаем после клика
-		};
-	}
+	// ВАЖНО: Переназначаем событие клика с помощью cloneNode, 
+	// чтобы полностью удалить предыдущие привязки (включая ссылки на PDF)
+	const newActionBtn = modalActionBtn.cloneNode(true);
+	modalActionBtn.parentNode.replaceChild(newActionBtn, modalActionBtn);
+
+	// Вешаем ЧИСТОЕ действие скачивания vCard
+	newActionBtn.addEventListener('click', function () {
+		executeVCardDownload();
+		modal.classList.remove('active');
+	});
 
 	// Показываем окно
 	modal.classList.add('active');
