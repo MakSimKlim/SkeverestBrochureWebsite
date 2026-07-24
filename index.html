@@ -236,16 +236,6 @@
 
             </main>
                     
-            <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
-                <div class="lightbox-content">
-                    <span class="lightbox-close" onclick="closeLightbox(event)">&times;</span>
-                    <img id="lightbox-img" src="" alt="Просмотр">
-                    <div class="lightbox-caption">
-                        <div id="lightbox-title" class="lightbox-title"></div>
-                        <div id="lightbox-text" class="lightbox-text"></div>
-                    </div>
-                </div>
-            </div>
 
             <footer>
                 <img src="logo/LogoEverestMap.jpg" alt="ООО СК ЭВЕРЕСТ" class="vcard-avatar-img">
@@ -328,6 +318,17 @@
                     </div>
                 </div>
             </div>
+			
+			<div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
+				<div class="lightbox-content">
+					<span class="lightbox-close" onclick="closeLightbox(event)">&times;</span>
+					<img id="lightbox-img" src="" alt="Просмотр">
+					<div class="lightbox-caption">
+						<div id="lightbox-title" class="lightbox-title"></div>
+						<div id="lightbox-text" class="lightbox-text"></div>
+					</div>
+				</div>
+			</div>
 
 
 <script>
@@ -335,13 +336,16 @@ function rescaleCard() {
 	const wrapper = document.querySelector('.card-scale-wrapper');
 	const card = document.querySelector('.phone-container');
 	const modal = document.querySelector('.confirm-modal-card');
+	const lightbox = document.querySelector('.lightbox-content'); // Находим контент лайтбокса
 	
 	if (!wrapper || !card) return;
 
 	const baseWidth = 480; 
-	const modalBaseWidth = 360; // Фиксированная базовая ширина модалки из CSS
+	const modalBaseWidth = 320; // Фиксированная базовая ширина модалки из CSS
+	const lightboxBaseWidth = 760; // Фиксированная базовая ширина лайтбокса из CSS
 	const windowWidth = document.documentElement.clientWidth || window.innerWidth;
 	const padding = 20;
+	const modalPadding = 32; // <--- Отдельный чуть больший отступ по краям для модалки
 
 	// 1. Масштабирование основной визитки
 	if (windowWidth < baseWidth + padding) {
@@ -357,15 +361,27 @@ function rescaleCard() {
 		wrapper.style.height = 'auto';
 	}
 
-	// 2. Масштабирование модального окна (отдельно от визитки, чтобы не вылезало за края)
+	// 2. Масштабирование модального окна подтверждения
 	if (modal) {
-		if (windowWidth < modalBaseWidth + padding) {
-			const modalScale = (windowWidth - padding) / modalBaseWidth;
+		if (windowWidth < modalBaseWidth + modalPadding) {
+			const modalScale = (windowWidth - modalPadding) / modalBaseWidth;
 			modal.style.transform = `scale(${modalScale})`;
 		} else {
 			modal.style.transform = 'none';
 		}
 	}
+	// 3. Масштабирование Lightbox
+	if (lightbox) {
+		if (windowWidth < lightboxBaseWidth + padding && windowWidth >= 600) {
+			// На планшетах и средних экранах масштабируем от 760px
+			const lightboxScale = (windowWidth - padding) / lightboxBaseWidth;
+			lightbox.style.transform = `scale(${lightboxScale})`;
+		} else {
+			// На ноутбуках/ПК И на узких телефонах (< 600px) масштаб отключаем
+			lightbox.style.transform = 'none';
+		}
+	}
+	
 }
 
 window.addEventListener('resize', rescaleCard);

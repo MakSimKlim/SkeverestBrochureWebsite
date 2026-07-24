@@ -480,76 +480,111 @@ body::before {
 	margin-top: 2px;
 }
 
-/* LIGHTBOX */
+/* ==========================================
+   ЛАЙТБОКС (Аналог модального окна)
+   ========================================== */
 .lightbox {
 	display: none;
-	position: fixed;
-	z-index: 9999;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.88);
+	position: fixed !important;
+	top: 0 !important;
+	left: 0 !important;
+	width: 100vw !important;
+	height: 100vh !important;
+	height: 100dvh !important;
+	z-index: 999999 !important;
+	background-color: rgba(0, 0, 0, 0.85);
+	-webkit-backdrop-filter: blur(8px);
 	backdrop-filter: blur(8px);
+	
+	/* Выравнивание карточки строго по центру экрана */
 	justify-content: center;
 	align-items: center;
-	padding: 15px;
+	padding: 10px;
 	box-sizing: border-box;
-	animation: fadeIn 0.25s ease;
 }
 
 .lightbox-content {
 	position: relative;
-	background: var(--card-bg);
+	background: #ffffff;
 	border-radius: 18px;
-	width: 100%;
-	max-width: 90vw;
-	max-height: 90vh;
+	
+	/* Фиксированная базовая ширина для расчета в rescaleCard */
+	width: 760px;
+	max-width: 90vw; /* Защитный отступ на случай среднеразмерных экранов */
+	box-sizing: border-box;
+	
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
-	box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+	
+	/* Точка масштабирования строго из центра (как у confirm-modal-card) */
+	transform-origin: center center;
+	transition: transform 0.1s ease-out;
 }
 
 .lightbox-content img {
 	width: 100%;
 	height: auto;
-	max-height: 65vh; 
+	max-height: 65vh;
 	object-fit: contain;
-	background: #000;
+	background: #000000;
 	display: block;
+}
+
+.lightbox-caption {
+	padding: 16px 20px;
+	background: #ffffff;
+}
+
+.lightbox-title {
+	font-size: 1.1rem;
+	font-weight: 800;
+	color: #111827;
+	margin-bottom: 6px;
+}
+
+.lightbox-text {
+	font-size: 0.9rem;
+	color: #4b5563;
+	line-height: 1.4;
 }
 
 .lightbox-close {
 	position: absolute;
-	top: 10px;
+	top: 8px;
 	right: 14px;
 	color: #ffffff;
 	font-size: 32px;
 	font-weight: bold;
 	cursor: pointer;
-	text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+	text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
 	z-index: 10;
+	line-height: 1;
 }
+/* ДЛЯ УЗКИХ И МОБИЛЬНЫХ ЭКРАНОВ (< 600px) */
+@media (max-width: 600px) {
+	.lightbox-content {
+		width: 80vw !important; /* Занимает почти всю ширину смартфона */
+		max-height: 75vh;       /* Чтобы не вылезал по высоте */
+	}
 
-.lightbox-caption {
-	padding: 14px 16px;
-	text-align: left;
-	overflow-y: auto;
-}
+	.lightbox-content img {
+		max-height: 45vh;       /* Ограничиваем высоту фото, чтобы поместился текст */
+		object-fit: contain;
+	}
 
-.lightbox-title {
-	font-size: 1.05rem;
-	font-weight: 900;
-	color: var(--accent-orange);
-	text-transform: uppercase;
-	margin-bottom: 4px;
-}
+	.lightbox-caption {
+		padding: 12px 14px;     /* Компактные отступы для текста */
+	}
 
-.lightbox-text {
-	font-size: 0.85rem;
-	color: var(--text-main);
-	line-height: 1.4;
+	.lightbox-title {
+		font-size: 0.8rem;     /* Читаемый размер заголовка */
+	}
+
+	.lightbox-text {
+		font-size: 0.7rem;      /* Читаемый размер текста */
+	}
 }
 
 /* БАЗОВЫЙ КЛАСС ИНТЕРАКТИВНЫХ КНОПОК */
@@ -1069,10 +1104,11 @@ footer {
 	background: #ffffff;
 	border: 1px solid rgba(0, 0, 0, 0.1);
 	border-radius: 16px;
-	padding: 24px 20px;
+	padding: 20px 16px;
 	
 	/* КЛЮЧЕВОЙ МОМЕНТ: фиксированная ширина, чтобы текст не ехал */
-	width: 360px; 
+	width: 320px; 
+	max-width: 85vw; /* Защитный лимит: окно никогда не превысит 85% ширины экрана */
 	box-sizing: border-box;
 	text-align: center;
 	box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
@@ -1085,18 +1121,18 @@ footer {
 }
 
 .confirm-modal-title {
-	font-size: 1.1rem;
+	font-size: 1rem;
 	font-weight: 700;
 	color: #1a1a1a;
-	margin-bottom: 8px;
+	margin-bottom: 6px;
 	white-space: normal;
 }
 
 .confirm-modal-text {
-	font-size: 0.9rem;
+	font-size: 0.85rem;
 	color: #666666;
-	margin-bottom: 20px;
-	line-height: 1.4;
+	margin-bottom: 16px;
+	line-height: 1.35;
 }
 
 .confirm-modal-actions {
@@ -1107,7 +1143,7 @@ footer {
 
 .modal-btn {
 	width: 100%;
-	padding: 12px 14px;
+	padding: 10px 12px;
 	border-radius: 10px;
 	font-weight: 600;
 	font-size: 0.9rem;

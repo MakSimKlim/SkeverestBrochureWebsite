@@ -1,21 +1,26 @@
-// Функция свёртывания / раскрытия основного блока
+// ==========================================================
+// 1. Свёртывание / раскрытие основного блока
+// ==========================================================
 function toggleMainContent() {
 	const mainContent = document.getElementById('mainContent');
 	const toggleText = document.getElementById('toggleText');
 	const toggleIcon = document.getElementById('toggleIcon');
 	
+	if (!mainContent) return;
 	mainContent.classList.toggle('collapsed');
 	
 	if (mainContent.classList.contains('collapsed')) {
-		toggleText.textContent = 'Показать подробную информацию';
-		toggleIcon.textContent = '▼';
+		if (toggleText) toggleText.textContent = 'Показать подробную информацию';
+		if (toggleIcon) toggleIcon.textContent = '▼';
 	} else {
-		toggleText.textContent = 'Свернуть основной блок';
-		toggleIcon.textContent = '▲';
+		if (toggleText) toggleText.textContent = 'Свернуть основной блок';
+		if (toggleIcon) toggleIcon.textContent = '▲';
 	}
 }
 
-  // Универсальная анимация всех счетчиков (включая авторасчет лет)
+// ==========================================================
+// 2. Анимация счетчиков + текущий год
+// ==========================================================
 document.addEventListener("DOMContentLoaded", () => {
 	const metricsGrid = document.querySelector('.metrics-grid');
 	const duration = 1200;
@@ -47,68 +52,71 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	};
 
-	// Наблюдатель: перезапускает анимацию каждый раз при появлении блока на экране
 	if (metricsGrid && 'IntersectionObserver' in window) {
 		const observer = new IntersectionObserver((entries) => {
 			entries.forEach(entry => {
 				if (entry.isIntersecting) {
-					startCounters(); // Запускаем счет при входе в видимую область
+					startCounters();
 				}
 			});
-		}, { threshold: 0.3 }); // Сработает, когда показано 30% блока
+		}, { threshold: 0.3 });
 
 		observer.observe(metricsGrid);
 	} else {
-		startCounters(); // Резервный вариант, если браузер старый
+		startCounters();
 	}
 
-	// Подстановка года в футер
 	const yearElem = document.getElementById('current-year');
 	if (yearElem) yearElem.textContent = currentYear;
 });
 
-  // Логика работы слайдера
-  let currentSlide = 0;
-  const totalSlides = 5;
+// ==========================================================
+// 3. Логика работы слайдера
+// ==========================================================
+let currentSlide = 0;
+const totalSlides = 5;
 
-  function updateSlider() {
-      const track = document.getElementById('sliderTrack');
-      if (track) {
-          track.style.transform = `translateX(-${currentSlide * 20}%)`;
-      }
+function updateSlider() {
+	const track = document.getElementById('sliderTrack');
+	if (track) {
+		track.style.transform = `translateX(-${currentSlide * 20}%)`;
+	}
 
-      const buttons = document.querySelectorAll('.tab-btn');
-      buttons.forEach((btn, index) => {
-          btn.classList.toggle('active', index === currentSlide);
-      });
-  }
+	const buttons = document.querySelectorAll('.tab-btn');
+	buttons.forEach((btn, index) => {
+		btn.classList.toggle('active', index === currentSlide);
+	});
+}
 
-  function goToSlide(index) {
-      currentSlide = index;
-      updateSlider();
-  }
+function goToSlide(index) {
+	currentSlide = index;
+	updateSlider();
+}
 
-  function moveSlide(direction) {
-      currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
-      updateSlider();
-  }
+function moveSlide(direction) {
+	currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+	updateSlider();
+}
 
-  // Логика выпадающих меню (Карта)
-  function toggleBlock(id) {
-      const target = document.getElementById(id);
-      if (!target) return;
-      
-      const isVisible = target.classList.contains('active');
-      
-      document.querySelectorAll('.expand-box').forEach(box => box.classList.remove('active'));
-      
-      if (!isVisible) {
-          target.classList.add('active');
-      }
-  }
+// ==========================================================
+// 4. Логика выпадающих меню (Карта)
+// ==========================================================
+function toggleBlock(id) {
+	const target = document.getElementById(id);
+	if (!target) return;
+	
+	const isVisible = target.classList.contains('active');
+	
+	document.querySelectorAll('.expand-box').forEach(box => box.classList.remove('active'));
+	
+	if (!isVisible) {
+		target.classList.add('active');
+	}
+}
 
-
-// 1. Функция генерации и скачивания (получила правильное имя)
+// ==========================================================
+// 5. Логика vCard (Сохранение контакта)
+// ==========================================================
 function executeVCardDownload() {
 	const vcardData = [
 		'BEGIN:VCARD',
@@ -122,25 +130,20 @@ function executeVCardDownload() {
 		'END:VCARD'
 	].join('\r\n');
 
-	// Создаем бинарный объект (Blob) с явным указанием кодировки UTF-8
 	const blob = new Blob([vcardData], { type: 'text/vcard;charset=utf-8;' });
-	
-	// Создаем временную виртуальную ссылку
 	const blobUrl = URL.createObjectURL(blob);
 
 	const link = document.createElement('a');
 	link.href = blobUrl;
-	link.download = 'SK_Everest.vcf'; // Теперь браузер сохранит именно это имя!
+	link.download = 'SK_Everest.vcf';
 	
 	document.body.appendChild(link);
 	link.click();
 	document.body.removeChild(link);
 
-	// Освобождаем память через небольшую задержку
 	setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
 }
 
-// 2. Функция вызова модального окна
 function downloadVCard() {
 	const modal = document.getElementById('confirmModal');
 	const modalTitle = document.getElementById('modalTitle');
@@ -153,63 +156,57 @@ function downloadVCard() {
 		return;
 	}
 
-	// Настраиваем тексты
 	if (modalTitle) modalTitle.textContent = 'Сохранение контакта';
-	if (modalText) modalText.textContent = 'Уверены, что хотите сохранить?';
-	if (modalActionBtn) modalActionBtn.textContent = 'Да, сохранить';
-	
-	// Прячем кнопку копирования
+	if (modalText) modalText.textContent = 'Уверены, что хотите сохранить контакт?';
 	if (modalCopyBtn) modalCopyBtn.style.display = 'none';
 
-	// ВАЖНО: Переназначаем событие клика с помощью cloneNode, 
-	// чтобы полностью удалить предыдущие привязки (включая ссылки на PDF)
 	const newActionBtn = modalActionBtn.cloneNode(true);
+	newActionBtn.textContent = 'Да, сохранить';
 	modalActionBtn.parentNode.replaceChild(newActionBtn, modalActionBtn);
 
-	// Вешаем ЧИСТОЕ действие скачивания vCard
 	newActionBtn.addEventListener('click', function () {
 		executeVCardDownload();
 		modal.classList.remove('active');
 	});
 
-	// Показываем окно
 	modal.classList.add('active');
 }
 
-  // Поддержка свайпов
-  let startX = 0;
-  const viewport = document.getElementById('sliderViewport');
+// ==========================================================
+// 6. Поддержка свайпов для слайдера
+// ==========================================================
+let startX = 0;
+const viewport = document.getElementById('sliderViewport');
 
-  if (viewport) {
-      viewport.addEventListener('touchstart', (e) => {
-          startX = e.touches[0].clientX;
-      }, { passive: true });
+if (viewport) {
+	viewport.addEventListener('touchstart', (e) => {
+		startX = e.touches[0].clientX;
+	}, { passive: true });
 
-      viewport.addEventListener('touchend', (e) => {
-          let endX = e.changedTouches[0].clientX;
-          let diff = startX - endX;
+	viewport.addEventListener('touchend', (e) => {
+		let endX = e.changedTouches[0].clientX;
+		let diff = startX - endX;
 
-          if (Math.abs(diff) > 40) {
-              if (diff > 0) moveSlide(1);  // свайп влево
-              else moveSlide(-1);         // свайп вправо
-          }
-      }, { passive: true });
-  }
+		if (Math.abs(diff) > 40) {
+			if (diff > 0) moveSlide(1);
+			else moveSlide(-1);
+		}
+	}, { passive: true });
+}
 
 // ==========================================================
-// ОБНОВЛЕННАЯ ЛОГИКА: Модальное окно + Скопировать в буфер
+// 7. Обработчик ссылок (Портфолио, Телефон, Почта, Соцсети)
 // ==========================================================
 document.addEventListener('DOMContentLoaded', () => {
 	const modal = document.getElementById('confirmModal');
+	const modalTitle = document.getElementById('modalTitle');
 	const modalText = document.getElementById('modalText');
-	const modalActionBtn = document.getElementById('modalActionBtn');
 	const modalCopyBtn = document.getElementById('modalCopyBtn');
 	const modalCancelBtn = document.getElementById('modalCancelBtn');
 
 	let targetUrl = '';
 	let textToCopy = '';
 
-	// Функция закрытия окна и сброса состояния
 	const closeModal = () => {
 		if (modal) modal.classList.remove('active');
 		if (modalCopyBtn) {
@@ -221,21 +218,22 @@ document.addEventListener('DOMContentLoaded', () => {
 	document.addEventListener('click', (e) => {
 		const link = e.target.closest('a');
 
-		// Игнорируем клики вне ссылок и ссылки с классом badge-sro
 		if (!link || link.classList.contains('badge-sro')) return;
 
-		// Читаем ТОЧНЫЙ атрибут href из HTML (а не браузерную интерпретацию)
 		const hrefAttr = link.getAttribute('href') || '';
 
 		let actionName = 'Перейти';
 		let copyData = '';
 		let messageText = 'Вы действительно хотите перейти по ссылке?';
+		let isPdfDownload = false;
 
-		if (hrefAttr.includes('portfolio.pdf')) {
+		// Проверяем, ведет ли ссылка на PDF-файл (portfolio.pdf или из папки portfolio)
+		if (hrefAttr.toLowerCase().includes('.pdf') || hrefAttr.toLowerCase().includes('portfolio')) {
 			messageText = 'Скачать портфолио компании?';
 			actionName = 'Скачать PDF';
 			copyData = '';
-			if (modalCopyBtn) modalCopyBtn.style.display = 'none'; // Прячем кнопку скопировать
+			isPdfDownload = true;
+			if (modalCopyBtn) modalCopyBtn.style.display = 'none';
 		} else if (hrefAttr.startsWith('tel:')) {
 			messageText = 'Совершить звонок в компанию?';
 			actionName = 'Позвонить';
@@ -252,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			copyData = link.href;
 			if (modalCopyBtn) modalCopyBtn.style.display = '';
 		} else {
-			return; // Для остальных обычных ссылок модалку не открываем
+			return;
 		}
 
 		e.preventDefault();
@@ -260,22 +258,31 @@ document.addEventListener('DOMContentLoaded', () => {
 		targetUrl = link.href;
 		textToCopy = copyData;
 
-		if (modalText && modalActionBtn && modal) {
+		if (modalTitle) modalTitle.textContent = 'Подтверждение действия';
+
+		if (modalText && modal) {
 			modalText.textContent = messageText;
-			modalActionBtn.textContent = actionName;
+
+			const oldActionBtn = document.getElementById('modalActionBtn');
+			const newActionBtn = oldActionBtn.cloneNode(true);
+			newActionBtn.textContent = actionName;
+			oldActionBtn.parentNode.replaceChild(newActionBtn, oldActionBtn);
+
+			newActionBtn.addEventListener('click', () => {
+				closeModal();
+				
+				if (isPdfDownload) {
+					// Инициируем прямое скачивание через адресную строку
+					window.location.href = targetUrl;
+				} else {
+					window.open(targetUrl, '_blank');
+				}
+			});
+
 			modal.classList.add('active');
 		}
 	});
 
-	// Кнопка перенаправления/звонка
-	if (modalActionBtn) {
-		modalActionBtn.addEventListener('click', () => {
-			closeModal();
-			window.open(targetUrl, '_blank');
-		});
-	}
-
-	// Кнопка копирования с поддержкой fallback для всех условий
 	if (modalCopyBtn) {
 		modalCopyBtn.addEventListener('click', () => {
 			if (!textToCopy) return;
@@ -295,7 +302,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		});
 	}
 
-	// Резервная функция копирования (для HTTP и старых устройств)
 	function fallbackCopy(text, callback) {
 		const tempInput = document.createElement('textarea');
 		tempInput.value = text;
@@ -321,17 +327,42 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 });
 
-// Открытие Lightbox
-function openLightbox(imgSrc, title, description) {
-	document.getElementById('lightbox-img').src = imgSrc;
-	document.getElementById('lightbox-title').innerText = title;
-	document.getElementById('lightbox-text').innerText = description;
-	document.getElementById('lightbox').style.display = 'flex';
+// ==========================================================
+// 8. Lightbox (Просмотр изображений)
+// ==========================================================
+function openLightbox(src, title, text) {
+	const lightbox = document.getElementById('lightbox');
+	const img = document.getElementById('lightbox-img');
+	const titleEl = document.getElementById('lightbox-title');
+	const textEl = document.getElementById('lightbox-text');
+
+	if (!lightbox || !img) return;
+
+	img.src = src;
+	titleEl.textContent = title || '';
+	textEl.textContent = text || '';
+
+	// Показываем оверлей
+	lightbox.style.display = 'flex';
+	
+	// Запрещаем прокрутку страницы под лайтбоксом
+	document.body.style.overflow = 'hidden'; 
+
+	// Принудительно вызываем масштабирование после отображения
+	if (typeof rescaleCard === 'function') {
+		rescaleCard();
+	}
 }
 
-// Закрытие Lightbox
 function closeLightbox(event) {
-	if (event.target.id === 'lightbox' || event.target.classList.contains('lightbox-close')) {
-		document.getElementById('lightbox').style.display = 'none';
+	// Закрываем только при клике на крестик или на темный фон вне картинки
+	if (event && event.target !== event.currentTarget && !event.target.classList.contains('lightbox-close')) {
+		return;
+	}
+
+	const lightbox = document.getElementById('lightbox');
+	if (lightbox) {
+		lightbox.style.display = 'none';
+		document.body.style.overflow = ''; // Возвращаем скролл
 	}
 }
