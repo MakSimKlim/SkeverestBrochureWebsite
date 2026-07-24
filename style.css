@@ -14,7 +14,7 @@
 	--color-max: #6366F1;
 }
 
-* { 
+*, *::before, *::after { 
 	margin: 0; 
 	padding: 0; 
 	box-sizing: border-box; 
@@ -33,10 +33,10 @@ body {
 	color: var(--text-main);
 	display: flex;
 	justify-content: center;
-	align-items: center;
+	align-items: flex-start; /* <-- ИЗМЕНЕНО: теперь карточка ВСЕГДА будет наверху */
 	min-height: 100vh;
-	padding: 20px 10px;
-	overflow-x: hidden; /* Защита от горизонтальной прокрутки из-за блюра */
+	padding: 10px 0; /* <-- ИЗМЕНЕНО: убрали боковые padding, чтобы не резало края */
+	overflow-x: hidden;
 }
 
 /* Размытый фоновый слой */
@@ -55,11 +55,20 @@ body::before {
 	filter: blur(10px);
 }
 
-/* ГЛАВНЫЙ КОНТЕЙНЕР — ВСЕГДА 480px */
-/* Базовый контейнер */
+/* ОБЕРТКА ДЛЯ JS-МАСШТАБИРОВАНИЯ */
+.card-scale-wrapper {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	overflow: visible; /* <-- ИЗМЕНЕНО: visible гарантирует, что края трансформированного блока не урежутся */
+	position: relative;
+}
+
+/* ГЛАВНЫЙ КОНТЕЙНЕР — ФИКСИРОВАННАЯ ШИРИНА 480px */
 .phone-container {
 	width: 480px;
-	min-width: 480px; /* Фиксируем ширину */
+	flex-shrink: 0; /* Запрещаем сжатие браузером (сжимает только JS) */
 	background: var(--card-bg);
 	border: 1px solid var(--border-dark);
 	border-radius: 28px;
@@ -67,19 +76,6 @@ body::before {
 	box-shadow: 0 20px 50px rgba(0,0,0,0.12);
 	position: relative;
 	overflow: hidden;
-}
-/* Кроссбраузерный медиа-запрос для мобильных */
-@media (max-width: 500px) {
-	.phone-container {
-		/* Переносим точку отсчета масштаба в верхний центр */
-		transform-origin: top center;
-		
-		/* Рассчитываем и применяем точный масштаб */
-		transform: scale(calc((100vw - 20px) / 480));
-		
-		/* Компенсируем сжатие по высоте, чтобы не было пустой дыры снизу */
-		margin-bottom: calc((480px - (100vw - 20px)) * -0.8); 
-	}
 }
 
 /* ДИНАМИЧЕСКАЯ БЕСШОВНАЯ БЕГУЩАЯ СТРОКА */
@@ -177,6 +173,7 @@ body::before {
 	transition: all 0.2s ease;
 	margin-top: -4px;
 	margin-left: 6px;
+	flex-shrink: 0;
 }
 
 .badge-sro:hover {
@@ -205,7 +202,6 @@ body::before {
 	border-radius: 18px;
 	margin-bottom: 14px;
 	border: 1px solid var(--border-dark);
-
 }
 
 .hero-tag {
@@ -307,40 +303,13 @@ body::before {
 
 /* ВЬЮПОРТ ДЛЯ ЛЕНТЫ СЛАЙДОВ */
 .slider-viewport {
-	overflow: hidden;
-	width: 100%;
-	aspect-ratio: 1 / 1;
-	border-radius: 16px;
-	margin-bottom: 16px;
-}
-
-.slider-track {
-	display: flex;
-	transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
-	width: 500%;
-	height: 100%;
-}
-
-.slide-item {
 	position: relative;
-	width: 20%;
-	height: 100%;
-	background: transparent; /* Делаем фон слайдов прозрачным */
-	padding: 20px;
-	border-radius: 16px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	box-sizing: border-box;
-}
-.slider-viewport {
-	position: relative; /* Обязательно для позиционирования фона */
 	overflow: hidden;
 	width: 100%;
-	aspect-ratio: 1 / 1;
+	min-height: 360px; /* Заменяем aspect-ratio, чтобы текст со списками не обрезался */
 	border-radius: 16px;
 	margin-bottom: 16px;
-	background: var(--bg-inner); /* Базовый фон за логотипом */
+	background: var(--bg-inner);
 	border: 1px solid var(--border-dark);
 }
 
@@ -362,7 +331,7 @@ body::before {
 	z-index: 0;                 /* Опускаем под слайды */
 }
 
-/* Гарантируем, что лента со слайдами и текстом находится поверх фона */
+/* Лента со слайдами */
 .slider-track {
 	position: relative;
 	z-index: 1;
@@ -370,6 +339,19 @@ body::before {
 	transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
 	width: 500%;
 	height: 100%;
+}
+
+.slide-item {
+	position: relative;
+	width: 20%;
+	height: 100%;
+	background: transparent;
+	padding: 20px;
+	border-radius: 16px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	box-sizing: border-box;
 }
 
 /* СТИЛИ СЛАЙДОВ И СПИСКОВ */
@@ -449,30 +431,26 @@ body::before {
 	display: flex;
 	flex-direction: column;
 	position: relative;
-	/* Плавный переход для всех изменений: масштаба, тени, фильтра */
 	transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), 
 	            box-shadow 0.3s ease, 
 	            filter 0.3s ease, 
 	            opacity 0.3s ease;
-	z-index: 1; /* Базовый слой */
+	z-index: 1;
 }
 
-/* 1. Когда мышь НАВЕДЕНА НА ГАЛЕРЕЮ — ВСЕ карточки слегка «приглушаются» */
 .gallery-grid:hover .gallery-card {
-	filter: brightness(0.6) grayscale(10%); /* Покрываются серой тенью / темнеют */
-	opacity: 0.8;                           /* Слегка прозрачнеют */
+	filter: brightness(0.6) grayscale(10%);
+	opacity: 0.8;
 }
 
-/* 2. Но ТА КАРТОЧКА, на которую НАВЕЛИСЬ — выдвигается вперёд */
 .gallery-grid .gallery-card:hover {
-	transform: scale(1.02) translateY(-4px); /* Увеличивается и «тянется» вверх к пользователю */
-	filter: brightness(1) grayscale(0%);      /* Возвращается полная яркость и цвет */
+	transform: scale(1.02) translateY(-4px);
+	filter: brightness(1) grayscale(0%);
 	opacity: 1;
-	z-index: 10;                             /* Поднимается НАД остальными карточками */
-	box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25); /* Глубокая объемная тень под ней */
+	z-index: 10;
+	box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
 }
 
-/* При нажатии на телефоне или клике */
 .gallery-card:active {
 	transform: scale(0.98);
 }
@@ -641,6 +619,7 @@ body::before {
 	text-align: center;
 	margin-bottom: 6px;
 }
+
 .contact-header-details {
 	font-size: 0.7rem;
 	color: var(--text-muted);
@@ -714,7 +693,7 @@ body::before {
 	}
 }
 
-/* КНОПКА С АДРЕСОМ И КАРТОЙ и с раворачиванием основного блока*/
+/* КНОПКА С АДРЕСОМ И КАРТОЙ */
 .toggle-content-btn,
 .btn-secondary {
 	width: 100%;
@@ -731,7 +710,6 @@ body::before {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-
 	margin-bottom: 15px;
 	transition: all 0.2s ease;
 }
@@ -773,7 +751,7 @@ body::before {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	gap: 30px; /* Уменьшили зазор, чтобы иконки не вылезали на телефонах */
+	gap: 16px; /* Оптимизировали зазор для узких экранов */
 	margin-top: 7px;
 	width: 100%;
 }
@@ -789,8 +767,6 @@ body::before {
 	border: 1px solid var(--border-dark);
 	background: var(--bg-inner);
 	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-	
-	/* Обновили transition для плавной анимации подтягивания и тени */
 	transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), 
 	            box-shadow 0.25s ease, 
 	            border-color 0.25s ease;
@@ -820,8 +796,7 @@ body::before {
 	background: rgba(99, 102, 241, 0.08);
 }
 
-/* --- АНИМАЦИИ ПРИ НАВЕДЕНИИ (HOVER) --- */
-
+/* АНИМАЦИИ ПРИ НАВЕДЕНИИ (HOVER) */
 .social-circle-btn.tg:hover {
 	transform: translateY(-4px) scale(1.08) rotate(360deg);
 	border-color: var(--color-tg);
@@ -840,8 +815,7 @@ body::before {
 	box-shadow: 0 8px 20px rgba(99, 102, 241, 0.35);
 }
 
-/* --- ЭФФЕКТ НАЖАТИЯ (ACTIVE) --- */
-
+/* ЭФФЕКТ НАЖАТИЯ (ACTIVE) */
 .social-circle-btn:active {
 	transform: translateY(-1px) scale(0.96);
 	box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
@@ -1003,9 +977,10 @@ footer {
 	line-height: 1.3;
 }
 
+/* Картинка в футере — адаптивная */
 .vcard-avatar-img {
-	width: 300px;
-	height: 160px;
+	max-width: 50%;
+	height: auto;
 	object-fit: contain;
 	margin-bottom: 16px;
 }
@@ -1037,22 +1012,21 @@ footer {
 }
 
 /* СВОРАЧИВАНИЕ ГЛАВНОГО БЛОКА */
-/* БАЗОВЫЙ БЛОК */
 .main-content {
 	opacity: 1;
 	transition: opacity 0.3s ease;
 }
-/* АНИМАЦИЯ ДЛЯ СВОРАЧИВАЕМЫХ ЧАСТЕЙ (ВЕРХ И НИЗ) */
+
 .content-top,
 .content-bottom {
-	max-height: 3000px; /* Достаточный запас по высоте */
+	max-height: 3000px;
 	opacity: 1;
 	overflow: hidden;
 	transition: max-height 0.4s cubic-bezier(0, 1, 0, 1), 
 	            opacity 0.3s ease, 
 	            margin 0.4s ease;
 }
-/* КОГДА БЛОК СВЁРНУТ */
+
 .main-content.collapsed .content-top,
 .main-content.collapsed .content-bottom {
 	max-height: 0;
@@ -1137,19 +1111,17 @@ footer {
 	box-sizing: border-box;
 }
 
-/* 1. Главная кнопка (Перейти / Позвонить) — ОРАНЖЕВАЯ */
 .modal-btn.btn-action {
-	background: var(--accent-orange); /* Яркий оранжевый */
-	color: #000000; /* Черный при наведении */
+	background: var(--accent-orange);
+	color: #000000;
 }
 
 .modal-btn.btn-action:hover {
-	background: #000000; /* Черный при наведении */
-	color: #ffffff; /* Белый при наведении */
+	background: #000000;
+	color: #ffffff;
 	transform: translateY(-1px);
 }
 
-/* 2. Кнопка "Скопировать" — Светло-оранжевый контур */
 .modal-btn.btn-copy {
 	background: #fff8f3;
 	color: #d95b00;
@@ -1160,7 +1132,6 @@ footer {
 	background: #ffe3d1;
 }
 
-/* 3. Отмена */
 .modal-btn.btn-cancel {
 	background: transparent;
 	color: #888888;

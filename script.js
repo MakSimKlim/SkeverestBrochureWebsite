@@ -108,8 +108,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-// Генерация и скачивание файла vCard с подтверждением
-function downloadVCard() {
+// 1. Функция генерации и скачивания (получила правильное имя)
+function executeVCardDownload() {
 	const vcardData = [
 		'BEGIN:VCARD',
 		'VERSION:3.0',
@@ -120,9 +120,8 @@ function downloadVCard() {
 		'ADR;TYPE=WORK:;;ул. Могильникова, д. 95, оф. 102;Челябинск;;;Россия',
 		'URL:https://vk.ru/stroim_mir_vmeste',
 		'END:VCARD'
-	].join('\r\n'); // Для vCard важен перенос строк \r\n
+	].join('\r\n');
 
-	// Используем Data-URI с Base64 кодированием — это гарантирует корректное открытие на смартфонах
 	const base64Data = btoa(unescape(encodeURIComponent(vcardData)));
 	const dataUri = 'data:text/vcard;charset=utf-8;base64,' + base64Data;
 
@@ -134,6 +133,40 @@ function downloadVCard() {
 	document.body.appendChild(link);
 	link.click();
 	document.body.removeChild(link);
+}
+
+// 2. Функция вызова модального окна
+function downloadVCard() {
+	const modal = document.getElementById('confirmModal');
+	const modalTitle = document.getElementById('modalTitle');
+	const modalText = document.getElementById('modalText');
+	const modalActionBtn = document.getElementById('modalActionBtn');
+	const modalCopyBtn = document.getElementById('modalCopyBtn');
+
+	if (!modal) {
+		executeVCardDownload();
+		return;
+	}
+
+	// Настраиваем тексты модального окна
+	if (modalTitle) modalTitle.textContent = 'Сохранение контакта';
+	if (modalText) modalText.textContent = 'Уверены, что хотите сохранить?';
+	if (modalActionBtn) modalActionBtn.textContent = 'Да, сохранить';
+	
+	// Прячем кнопку копирования
+	if (modalCopyBtn) modalCopyBtn.style.display = 'none';
+
+	// Назначаем действие на главную кнопку
+	if (modalActionBtn) {
+		modalActionBtn.onclick = function () {
+			executeVCardDownload();
+			modal.classList.remove('active');
+			modalActionBtn.onclick = null; // Очищаем после клика
+		};
+	}
+
+	// Показываем окно
+	modal.classList.add('active');
 }
 
   // Поддержка свайпов
@@ -295,4 +328,3 @@ function closeLightbox(event) {
 		document.getElementById('lightbox').style.display = 'none';
 	}
 }
-
